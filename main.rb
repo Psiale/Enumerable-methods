@@ -58,7 +58,7 @@ module Enumerable # :nodoc:
     elsif val.class == Regexp
       my_each { |element| return true if val.match? element }
     else
-      my_each { |element| return true unless element == val }
+      my_each { |element| return true if element == val }
     end
     false
   end
