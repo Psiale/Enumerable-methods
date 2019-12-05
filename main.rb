@@ -35,14 +35,22 @@ module Enumerable # :nodoc:
     end
   end
 
-  def my_all?
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+
+  def my_all?(val = nil)
     if block_given?
       my_each { |element| return false unless yield element }
-      true
+    elsif val.class == Class
+      my_each { |element| return false unless element.is_a? val }
+    elsif val.class == Regexp
+      my_each { |element| return false unless val.match? element }
     else
-      to_enum(:my_all?)
+      my_each { |element| return false unless val == element }
     end
+    true
   end
+
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   def my_any?
     if block_given?
@@ -61,4 +69,6 @@ module Enumerable # :nodoc:
       to_enum(:my_none?)
     end
   end
+
+  p(%w[ant ra sat].my_all? { |word| word.length >= 2 })
 end
