@@ -50,7 +50,7 @@ module Enumerable # :nodoc:
     true
   end
 
-  def my_any?
+  def my_any?(val = nil)
     if block_given?
       my_each { |element| return true if yield element }
     elsif val.class == Class
@@ -73,6 +73,4 @@ module Enumerable # :nodoc:
       to_enum(:my_none?)
     end
   end
-
-  p([nil, true, 99].my_all? == [nil, true, 99].all?)
 end
