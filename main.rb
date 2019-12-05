@@ -40,7 +40,16 @@ module Enumerable # :nodoc:
       my_each { |element| return false unless yield element }
       true
     else
-      to_enum(:my_select)
+      to_enum(:my_all)
+    end
+  end
+
+  def my_any?
+    if block_given?
+      my_each { |element| return true if yield element }
+      false
+    else
+      to_enum(:my_any)
     end
   end
 end
