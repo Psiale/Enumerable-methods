@@ -45,21 +45,25 @@ module Enumerable # :nodoc:
     elsif val.class == Regexp
       my_each { |element| return false unless val.match? element }
     else
-      my_each { |element| return false unless val == element }
+      my_each { |element| return false unless element == val }
     end
     true
   end
 
-  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-
   def my_any?
     if block_given?
       my_each { |element| return true if yield element }
-      false
+    elsif val.class == Class
+      my_each { |element| return true if element.is_a? val }
+    elsif val.class == Regexp
+      my_each { |element| return true if val.match? element }
     else
-      to_enum(:my_any?)
+      my_each { |element| return true unless element == val }
     end
+    false
   end
+
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   def my_none?
     if block_given?
@@ -70,5 +74,5 @@ module Enumerable # :nodoc:
     end
   end
 
-  p(%w[ant ra sat].my_all? { |word| word.length >= 2 })
+  p([nil, true, 99].my_all? == [nil, true, 99].all?)
 end
