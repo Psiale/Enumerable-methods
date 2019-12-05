@@ -28,9 +28,7 @@ module Enumerable # :nodoc:
   def my_select
     result = []
     if block_given?
-      my_each do |element|
-        result << element if yield element
-      end
+      my_each { |element| result << element if yield element }
       return result
     else
       to_enum(:my_select)
