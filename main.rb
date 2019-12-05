@@ -8,8 +8,9 @@ module Enumerable # :nodoc:
         yield self[i]
         i += 1
       end
+    else
+      to_enum(:my_each)
     end
-    to_enum
   end
 
   def my_each_with_index
@@ -19,7 +20,8 @@ module Enumerable # :nodoc:
         yield(self[i], i)
         i += 1
       end
+    else
+      to_enum(:my_each_with_index)
     end
-    to_enum
   end
 end
