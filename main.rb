@@ -24,4 +24,16 @@ module Enumerable # :nodoc:
       to_enum(:my_each_with_index)
     end
   end
+
+  def my_select
+    result = []
+    if block_given?
+      my_each do |element|
+        result << element if yield element
+      end
+      return result
+    else
+      to_enum(:my_select)
+    end
+  end
 end
