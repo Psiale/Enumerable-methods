@@ -92,11 +92,30 @@ module Enumerable # :nodoc:
     count
   end
 
-  def my_map
-    return to_enum(:my_map) unless block_given?
+  def my_map(proc = nil)
+    return to_enum(:my_map) unless block_given? || proc
 
     result = []
-    to_a.my_each { |element| result << yield(element) }
+    if proc.nil?
+      to_a.my_each { |element| result << yield(element) }
+    else
+      to_a.my_each { |element| result << proc.call(element) }
+    end
     result
+  end
+
+  def my_inject(initial = nil)
+    if initial.nil?
+      acc = self[0]
+      self[1..-1].my_each { |element| acc = yield(acc, element) }
+    else
+      acc = initial
+      my_each { |element| acc = yield(acc, element) }
+    end
+    acc
+  end
+
+  def multiply_els(array)
+    array.my_inject { |accumulator, current_element| accumulator * current_element }
   end
 end
