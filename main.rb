@@ -82,15 +82,13 @@ module Enumerable # :nodoc:
 
   def my_count(val = nil)
     count = 0
-
     if block_given?
       my_each { |element| count += 1 if yield element }
     elsif val.nil?
       count = length
     else
-      my_each { |element| count += 1 if element == val}
+      my_each { |element| count += 1 if element == val }
     end
-    
     count
   end
 end
