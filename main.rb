@@ -24,13 +24,11 @@ module Enumerable # :nodoc:
   end
 
   def my_select
+    return to_enum(:my_select) unless block_given?
+
     result = []
-    if block_given?
-      my_each { |element| result << element if yield element }
-      result
-    else
-      to_enum(:my_select)
-    end
+    my_each { |element| result << element if yield element }
+    result
   end
 
   # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
@@ -69,7 +67,7 @@ module Enumerable # :nodoc:
     if block_given?
       my_each { |element| return false if yield element }
     elsif val.class == Class
-      my_each { |element| return false if element.class == val.class }
+      my_each { |element| return false if element.class == val }
     elsif val.class == Regexp
       my_each { |element| return false if val.match? element }
     else
