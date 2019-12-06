@@ -1,5 +1,7 @@
 # frozen_string_literal: false
 
+# rubocop:disable Metrics/ModuleLength
+
 module Enumerable # :nodoc:
   def my_each
     return to_enum(:my_each) unless block_given?
@@ -104,13 +106,24 @@ module Enumerable # :nodoc:
     result
   end
 
-  def my_inject(initial = nil)
+  def my_inject(initial = nil, sym = nil)
+    arr = to_a
+
     if initial.nil?
-      acc = self[0]
-      self[1..-1].my_each { |element| acc = yield(acc, element) }
-    else
+      acc = arr[0]
+      arr[1..-1].my_each { |element| acc = yield(acc, element) }
+    elsif block_given?
       acc = initial
-      my_each { |element| acc = yield(acc, element) }
+      arr.my_each { |element| acc = yield(acc, element) }
+    elsif initial && sym
+      acc = initial
+      arr.my_each { |element| acc = acc.send(sym, element) }
+    elsif initial.is_a? Numeric
+      acc = initial
+      arr.my_each { |element| acc += element }
+    else
+      acc = arr[0]
+      arr[1..-1].my_each { |element| acc = acc.send(initial, element) }
     end
     acc
   end
@@ -119,3 +132,5 @@ module Enumerable # :nodoc:
     array.my_inject { |accumulator, current_element| accumulator * current_element }
   end
 end
+
+# rubocop:enable Metrics/ModuleLength
