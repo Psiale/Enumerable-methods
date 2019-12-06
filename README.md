@@ -1,6 +1,3 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Issues][issues-shield]][issues-url]
-<br />
 <p align="center">
  
   <h3 align="center">Enumerable Methods</h3>
@@ -35,7 +32,7 @@
 Ruby Solo project to recreate own version of the built in Ruby enumerable methods
 
 ### Objective
- -Getting more hands on experience with Ruby
+ - Getting more hands on experience with Ruby
  - Getting familiar with the enumerable module and its methods
  
 ### Assignment:
