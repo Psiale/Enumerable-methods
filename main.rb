@@ -91,4 +91,12 @@ module Enumerable # :nodoc:
     end
     count
   end
+
+  def my_map
+    return to_enum(:my_map) unless block_given?
+
+    result = []
+    to_a.my_each { |element| result << yield(element) }
+    result
+  end
 end
