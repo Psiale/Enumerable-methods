@@ -17,7 +17,7 @@ module Enumerable # :nodoc:
 
     i = 0
     while i < length
-      yield (self[i], i)
+      yield(self[i], i)
       i += 1
     end
     self
@@ -37,7 +37,7 @@ module Enumerable # :nodoc:
     if block_given?
       my_each { |element| return false unless yield element }
     elsif val.class == Class
-      my_each { |element| return false unless element.class == val }
+      my_each { |element| return false unless element.is_a? val }
     elsif val.class == Regexp
       my_each { |element| return false unless val.match? element }
     elsif val.nil?
@@ -52,7 +52,7 @@ module Enumerable # :nodoc:
     if block_given?
       my_each { |element| return true if yield element }
     elsif val.class == Class
-      my_each { |element| return true if element.class == val }
+      my_each { |element| return true if element.is_a? val }
     elsif val.class == Regexp
       my_each { |element| return true if val.match? element }
     elsif val.nil?
@@ -67,9 +67,11 @@ module Enumerable # :nodoc:
     if block_given?
       my_each { |element| return false if yield element }
     elsif val.class == Class
-      my_each { |element| return false if element.class == val }
+      my_each { |element| return false if element.is_a? val }
     elsif val.class == Regexp
       my_each { |element| return false if val.match? element }
+    elsif val.nil?
+      my_each { |element| return false if element }
     else
       my_each { |element| return false if element == val }
     end
@@ -78,7 +80,17 @@ module Enumerable # :nodoc:
 
   # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
-  # p [nil, Integer, 99].any?(Integer)
-  # p [1, 2, 3].my_all?(Numeric)
-  p [1, 2, 3].my_each { |element| puts element }
+  def my_count(val = nil)
+    count = 0
+
+    if block_given?
+      my_each { |element| count += 1 if yield element }
+    elsif val.nil?
+      count = length
+    else
+      my_each { |element| count += 1 if element == val}
+    end
+    
+    count
+  end
 end
