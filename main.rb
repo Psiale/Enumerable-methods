@@ -41,7 +41,7 @@ module Enumerable # :nodoc:
     elsif val.class == Class
       my_each { |element| return false unless element.is_a? val }
     elsif val.class == Regexp
-      my_each { |element| return false unless val.match? element }
+      my_each { |element| return false unless val =~ element }
     elsif val.nil?
       my_each { |element| return false unless element }
     else
@@ -56,7 +56,7 @@ module Enumerable # :nodoc:
     elsif val.class == Class
       my_each { |element| return true if element.is_a? val }
     elsif val.class == Regexp
-      my_each { |element| return true if val.match? element }
+      my_each { |element| return true if val =~ element }
     elsif val.nil?
       my_each { |element| return true if element }
     else
@@ -71,7 +71,7 @@ module Enumerable # :nodoc:
     elsif val.class == Class
       my_each { |element| return false if element.is_a? val }
     elsif val.class == Regexp
-      my_each { |element| return false if val.match? element }
+      my_each { |element| return false if val =~ element }
     elsif val.nil?
       my_each { |element| return false if element }
     else
